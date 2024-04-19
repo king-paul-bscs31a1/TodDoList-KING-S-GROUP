@@ -47,24 +47,24 @@
                 </thead>
     </div>
                 <tbody>
-                    @foreach (ToDo task in Model)
+                    @foreach (var task in Model)
                     {
                         string overdue = task.Overdue ? "bg-warning" : "";
-                        <tr>
-                            <td>@task.Description</td>
-                            <td>@task.Category.Name</td>
-                            <td class="@overdue">@task.DueDate?.ToShortDateString()</td>
-                            <td class="@overdue">@task.Status.Name</td>
-                            <td>
-                                @if (task.StatusId == "open")
-                            {
-                                    <button type="submit" class="btn btn-primary btn-sm"
-                                            name="@nameof(ToDo.Id)" value="@task.Id">
-                                        Mark Completed
-                                    </button>
+            <tr>
+                <td>@task.Description</td>
+                <td>@task.Category</td>
+                <td class="@overdue">@task.DueDate?.ToShortDateString()</td>
+                <td class="@overdue">@task.Status</td>
+                <td>
+                                @if (task.Status == Status.InProgress)
+                                {
+                        <button type="submit" class="btn btn-primary btn-sm"
+                                name="@nameof(ToDo.Id)" value="@task.Id">
+                            Mark Completed
+                        </button>
                                 }
-                            </td>
-                        </tr>
+                </td>
+            </tr>
                     }
                 </tbody>
             </table>
