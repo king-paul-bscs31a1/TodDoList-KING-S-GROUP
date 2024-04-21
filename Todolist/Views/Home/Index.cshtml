@@ -30,48 +30,43 @@
         </form>
     </div>
     <div class="col-md-10">
-        <form asp-action="MarkComplete" method="post" asp-route-id="@ViewBag.Filters.FilterString">
-
-            <table class="table table-bordered table-striped mt-2">
-                <div class="th">
-                <thead>
-                    
-                        <tr>
-                        <th>Description</th>
-                        <th>Category</th>
-                        <th>Due Date</th>
-                        <th>Status</th>
-                    </tr>
-                    
-
-                </thead>
+    <form asp-action="MarkComplete" method="post" asp-route-id="@ViewBag.Filters.FilterString">
+    <table class="table table-bordered table-striped mt-2">
+        <div class="th">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Due Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
     </div>
-                <tbody>
-                    @foreach (ToDo task in Model)
+    <tbody>
+        @foreach (var task in Model)
+        {
+            string overdue = task.Overdue ? "bg-warning" : "";
+            <tr>
+                <td>@task.Description</td>
+                <td>@task.Category</td>
+                <td class="@overdue">@task.DueDate?.ToShortDateString()</td>
+                <td class="@overdue">@task.Status</td>
+                <td>
+                    @if (task.Status == Status.InProgress)
                     {
-                        string overdue = task.Overdue ? "bg-warning" : "";
-                        <tr>
-                            <td>@task.Description</td>
-                            <td>@task.Category.Name</td>
-                            <td class="@overdue">@task.DueDate?.ToShortDateString()</td>
-                            <td class="@overdue">@task.Status.Name</td>
-                            <td>
-                                @if (task.StatusId == "open")
-                            {
-                                    <button type="submit" class="btn btn-primary btn-sm"
-                                            name="@nameof(ToDo.Id)" value="@task.Id">
-                                        Mark Completed
-                                    </button>
-                                }
-                            </td>
-                        </tr>
+                        <button type="submit" class="btn btn-primary btn-sm"
+                                name="@nameof(ToDo.Id)" value="@task.Id">Mark Completed
+                        </button>
                     }
-                </tbody>
-            </table>
-        </form>
-        <form asp-action="DeleteComplete" method="post" asp-route-id="@ViewBag.Filters.FilterString">
-            <a asp-action="Add" class="btn btn-primary">Add New Task</a>
-            <button type="submit" class="btn btn-primary">Delete Completed Tasks</button>
-        </form>
-    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+    </table>
+    </form>
+    <form asp-action="DeleteComplete" method="post" asp-route-id="@ViewBag.Filters.FilterString">
+        <a asp-action="Add" class="btn btn-primary">Add New Task</a>
+        <button type="submit" class="btn btn-primary">Delete Completed Tasks</button>
+    </form>
+</div>
 </div>
